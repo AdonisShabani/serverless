@@ -80,6 +80,6 @@ resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
   function_name = each.key
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = var.source_arns
-  depends_on    = [aws_lambda_function.lambda[each.key]]
+  source_arn    = [ "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*/*" ]
+  depends_on    = [aws_lambda_function.lambda]
 }

@@ -102,9 +102,3 @@ variable "timeout" {
   type        = number
   default     = 30
 }
-
-variable "source_arns" {
-  description = "ARN of the specific resource within that service to grant permission to"
-  type        = list(string)
-  default = [ "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*/*" ]
-}
