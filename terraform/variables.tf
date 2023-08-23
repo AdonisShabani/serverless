@@ -10,6 +10,16 @@ variable "region" {
   default     = "eu-central-1"
 }
 
+variable "aws_access_key" {
+  type        = string
+  description = "AWS Access Key"
+}
+
+variable "aws_secret_access_key" {
+  type        = string
+  description = "AWS Access Secret Key"
+}
+
 variable "paths" {
   description = "API Gateway resurce paths"
   type        = list(string)
@@ -81,14 +91,6 @@ variable "vpc_security_group_ids" {
   description = "List of security group ids when Lambda Function should run in the VPC."
   type        = list(string)
   default     = null
-}
-
-variable "s3_existing_package" {
-  description = "Bucket name and key for existing lambda package"
-  type = object({
-    bucket = string
-    key    = string
-  })
 }
 
 variable "environment_variables" {
