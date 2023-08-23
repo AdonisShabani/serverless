@@ -20,8 +20,7 @@ resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
   retention_in_days = 30
 }
 resource "aws_iam_policy" "policy" {
-  name        = "test-policy"
-  description = "A test policy"
+  name        = local.lambda_iam_policy_name
   policy      = data.aws_iam_policy_document.lambda_access_policy.json
 }
 
@@ -31,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = local.lambda_iam_role_name
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
