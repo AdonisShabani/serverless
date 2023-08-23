@@ -13,9 +13,9 @@ locals {
             function_name = "lambda_endrolled"
             descrption = "Lambda for enrolled accounts"
         },
-        lambda_payment = {
-            function_name = "lambda_payment"
-            descrption = "Lambda for paying accounts"
+        lambda_courses = {
+            function_name = "lambda_courses"
+            descrption = "Lambda for courses"
         }
 
     }

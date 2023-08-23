@@ -1,30 +1,56 @@
 variable "environment" {
   description = "Environment of the application, e.x. dev, prod, stage"
-  type = string
-  default = "dev"
+  type        = string
+  default     = "dev"
 }
 
 variable "region" {
   description = "AWS Region"
-  type = string
-  default = "eu-central-1"  
+  type        = string
+  default     = "eu-central-1"
 }
 
 variable "paths" {
   description = "API Gateway resurce paths"
-  type = list(string)
-  default = [ "/users", "/enrolled", "/payment" ]
-  
+  type        = list(string)
+  default     = ["/users", "/enrolled", "/courses"]
+}
+
+variable "http_method" {
+  description = "HTTP Method (GET, POST, PUT, DELETE, HEAD, OPTIONS, ANY)"
+  type        = string
+  default     = "ANY"
 }
 
 variable "handler" {
   description = "Handler for AWS Lambda"
   type        = string
+  default     = "hello.handler"
+}
+
+variable "file_type" {
+  description = "The type of archive to generate. NOTE: zip is supported."
+  type        = string
+  default     = "zip"
+
+}
+
+variable "filename" {
+  description = "Path to the function's deployment package within the local filesystem"
+  type        = string
+  default     = "hello.js"
+}
+
+variable "output_path" {
+  description = " The output of the archive file."
+  type        = string
+  default     = "hello.zip"
 }
 
 variable "runtime" {
   description = "AWS Lambda runtime"
   type        = string
+  default     = "nodejs12.x"
 }
 
 variable "publish" {
@@ -33,18 +59,18 @@ variable "publish" {
   default     = true
 }
 
-variable "create_package" {
-  description = "Controls whether Lambda package should be created"
-  type        = bool
-  default     = false
-}
-
 variable "memory_size" {
   description = "Amount of memory in MB your Lambda Function can use at runtime. Valid value between 128 MB to 10,240 MB (10 GB), in 64 MB increments."
   type        = number
   default     = 512
 }
 
+variable "package_type" {
+  description = "Lambda deployment package type. Valid values are Zip and Image. Defaults to Zip."
+  type        = string
+  default     = "zip"
+
+}
 variable "vpc_subnet_ids" {
   description = "List of subnet ids when Lambda Function should run in the VPC. Usually private or intra subnets."
   type        = list(string)
@@ -56,19 +82,6 @@ variable "vpc_security_group_ids" {
   type        = list(string)
   default     = null
 }
-
-variable "attach_policy_statements" {
-  description = "Controls whether policy_statements should be added to IAM role for Lambda Function"
-  type        = bool
-  default     = false
-}
-
-variable "policy_statements" {
-  description = "Map of dynamic policy statements to attach to Lambda Function role"
-  type        = any
-  default     = {}
-}
-
 
 variable "s3_existing_package" {
   description = "Bucket name and key for existing lambda package"
@@ -90,13 +103,8 @@ variable "timeout" {
   default     = 30
 }
 
-variable "tags" {
-  description = "A map of tags to assign to resources."
-  type        = map(string)
-  default     = {}
-}
-
 variable "source_arns" {
   description = "ARN of the specific resource within that service to grant permission to"
   type        = list(string)
+  default = [ "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*/*" ]
 }
