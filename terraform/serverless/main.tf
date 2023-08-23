@@ -67,10 +67,14 @@ resource "aws_lambda_function" "lambda" {
   publish            = var.publish
   memory_size        = var.memory_size
   package_type       = var.package_type
-  subnet_ids         = data.terraform_remote_state.networking.outputs.private_subnets
-  security_group_ids = data.terraform_remote_state.networking.outputs.lambda_sg_id
   # variables          = var.environment_variables
   timeout            = var.timeout
+
+   vpc_config {
+    # Every subnet should be able to reach an EFS mount target in the same Availability Zone. Cross-AZ mounts are not permitted.
+    subnet_ids         = [element(data.terraform_remote_state.networking.outputs.public_subnets, 1)]
+    security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
+  }
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
 }
