@@ -19,10 +19,15 @@ resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
 
   retention_in_days = 30
 }
+resource "aws_iam_policy" "policy" {
+  name        = "test-policy"
+  description = "A test policy"
+  policy      = data.aws_iam_policy_document.lambda_access_policy.json
+}
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.iam_for_lambda.arn
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = aws_iam_policy.policy.arn
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
