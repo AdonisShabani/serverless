@@ -93,11 +93,11 @@ variable "vpc_security_group_ids" {
   default     = null
 }
 
-variable "environment_variables" {
-  description = "A map that defines environment variables for the Lambda Function."
-  type        = map(string)
-  default     = {}
-}
+# variable "environment_variables" {
+#   description = "A map that defines environment variables for the Lambda Function."
+#   type        = map(string)
+#   default     = {}
+# }
 
 variable "timeout" {
   description = "The amount of time your Lambda Function has to run in seconds."

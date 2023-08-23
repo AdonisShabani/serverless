@@ -5,13 +5,13 @@ resource "aws_api_gateway_rest_api" "api_gtw" {
 
 module "rest_api_resources" {
   for_each = toset(var.paths)
-  source   = "../modules/api-integration"
+  source   = "../../modules/api-integration"
 
   api_gateway_id               = aws_api_gateway_rest_api.api_gtw.id
   api_gateway_root_resource_id = aws_api_gateway_rest_api.api_gtw.root_resource_id
   path                         = each.key
   http_method                  = "ANY"
-  uri                          = module.lambda_user
+  uri                          = aws_lambda_function.lambda.invoke_arn
 }
 
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
@@ -67,9 +67,9 @@ resource "aws_lambda_function" "lambda" {
   publish            = var.publish
   memory_size        = var.memory_size
   package_type       = var.package_type
-  subnet_ids         = var.vpc_subnet_ids
-  security_group_ids = var.vpc_security_group_ids
-  variables          = var.environment_variables
+  subnet_ids         = data.terraform_remote_state.networking.outputs.private_subnets
+  security_group_ids = data.terraform_remote_state.networking.outputs.lambda_sg_id
+  # variables          = var.environment_variables
   timeout            = var.timeout
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
