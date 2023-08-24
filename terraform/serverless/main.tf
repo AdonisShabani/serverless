@@ -15,7 +15,8 @@ module "rest_api_resources" {
 }
 
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
-  name = "/aws/lambda/${aws_lambda_function.lambda[each.key].function_name}"
+  for_each = "/aws/lambda/${aws_lambda_function.lambda[each.key].function_name}"
+  name = each.key
 
   retention_in_days = 30
 }
@@ -84,6 +85,6 @@ resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
   function_name = each.key
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = [ "${each.value}/*/*" ]
+  source_arn    = [ "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*" ]
   depends_on    = [aws_lambda_function.lambda]
 }
