@@ -15,14 +15,13 @@ module "rest_api_resources" {
 }
 
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
-  for_each = "/aws/lambda/${aws_lambda_function.lambda[each.key].function_name}"
-  name = each.key
+  name = local.cloudwatch_logs_gorup_name
 
   retention_in_days = 30
 }
 resource "aws_iam_policy" "policy" {
-  name        = local.lambda_iam_policy_name
-  policy      = data.aws_iam_policy_document.lambda_access_policy.json
+  name   = local.lambda_iam_policy_name
+  policy = data.aws_iam_policy_document.lambda_access_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
@@ -58,20 +57,20 @@ data "archive_file" "lambda" {
 
 
 resource "aws_lambda_function" "lambda" {
-  for_each           = { for k, v in local.lambda_modules : k => v }
-  filename           = var.filename
-  function_name      = each.key
-  description        = each.value.description
-  role               = aws_iam_role.iam_for_lambda.arn
-  handler            = var.handler
-  runtime            = var.runtime
-  publish            = var.publish
-  memory_size        = var.memory_size
-  package_type       = var.package_type
+  for_each      = { for k, v in local.lambda_modules : k => v }
+  filename      = var.filename
+  function_name = each.key
+  description   = each.value.description
+  role          = aws_iam_role.iam_for_lambda.arn
+  handler       = var.handler
+  runtime       = var.runtime
+  publish       = var.publish
+  memory_size   = var.memory_size
+  package_type  = var.package_type
   # variables          = var.environment_variables
-  timeout            = var.timeout
+  timeout = var.timeout
 
-   vpc_config {
+  vpc_config {
     # Every subnet should be able to reach an EFS mount target in the same Availability Zone. Cross-AZ mounts are not permitted.
     subnet_ids         = [element(data.terraform_remote_state.networking.outputs.public_subnets, 1)]
     security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
@@ -85,6 +84,6 @@ resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
   function_name = each.key
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = [ "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*" ]
+  source_arn    = "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*"
   depends_on    = [aws_lambda_function.lambda]
 }
