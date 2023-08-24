@@ -9,15 +9,15 @@ locals {
 
 
   lambda_modules = {
-    "/users" = {
+    "users" = {
       function_name = "lambda_user"
       description   = "Lambda for users"
     },
-    "/enrolled" = {
+    "enrolled" = {
       function_name = "lambda_enrolled"
       description   = "Lambda for enrolled accounts"
     },
-    "/courses" = {
+    "courses" = {
       function_name = "lambda_courses"
       description   = "Lambda for courses"
     }
