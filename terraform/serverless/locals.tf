@@ -1,9 +1,9 @@
 locals {
-  project                    = "Appstellar-Academy"
+  project                    = "appstellar-academy"
   rest_api_name              = format("%s-api-%s", local.project, var.environment)
   rest_api_description       = "Appstellar Academy Rest API Gateway"
-  lambda_iam_policy_name     = format("%s-lambda-policy-%s", local.project, var.environment)
-  lambda_iam_role_name       = format("%s-lambda-role-%s", local.project, var.environment)
+  lambda_iam_policy_name     = format("%s_lambda_policy_%s", local.project, var.environment)
+  lambda_iam_role_name       = format("%s_lambda_role_%s", local.project, var.environment)
   cloudwatch_logs_gorup_name = format("%s-lambda-logs-%s", local.project, var.environment)
 
 

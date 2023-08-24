@@ -23,7 +23,7 @@ variable "aws_secret_access_key" {
 variable "paths" {
   description = "API Gateway resurce paths"
   type        = list(string)
-  default     = ["/users", "/enrolled", "/courses"]
+  default     = ["users", "enrolled", "courses"]
 }
 
 variable "http_method" {
@@ -60,7 +60,7 @@ variable "output_path" {
 variable "runtime" {
   description = "AWS Lambda runtime"
   type        = string
-  default     = "nodejs12.x"
+  default     = "nodejs18.x"
 }
 
 variable "publish" {
