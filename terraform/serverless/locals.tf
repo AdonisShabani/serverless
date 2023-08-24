@@ -14,11 +14,11 @@ locals {
     },
     lambda_enroled = {
       function_name = "lambda_endrolled"
-      descrption    = "Lambda for enrolled accounts"
+      description    = "Lambda for enrolled accounts"
     },
     lambda_courses = {
       function_name = "lambda_courses"
-      descrption    = "Lambda for courses"
+      description    = "Lambda for courses"
     }
 
   }
