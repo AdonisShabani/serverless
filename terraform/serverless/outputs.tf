@@ -1,7 +1,7 @@
 output "lambda_function_arn" {
   description = "The ARN of the Lambda Function"
   value = [
-    for k in aws_lambda_function.lambda : k.name
+    for k in aws_lambda_function.lambda : k.ARN
   ]
 }
 
