@@ -78,7 +78,7 @@ resource "aws_lambda_function" "lambda" {
     security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
   }
 
-  source_code_hash = data.archive_file.lambda.output_base64sha256
+  source_code_hash = filebase64sha256("hello-world.zip")
 }
 
 resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
