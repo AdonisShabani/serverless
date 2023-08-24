@@ -61,7 +61,7 @@ resource "aws_lambda_function" "lambda" {
   for_each = { for k, v in local.lambda_modules : k => v }
 
   filename      = var.filename
-  function_name = each.key
+  function_name = each.value.function_name
   description   = each.value.description
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = var.handler
@@ -83,7 +83,7 @@ resource "aws_lambda_function" "lambda" {
 
 resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
   for_each      = { for k, v in local.lambda_modules : k => v }
-  function_name = each.key
+  function_name = each.value.function_name
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.api_gtw.execution_arn}/*"
