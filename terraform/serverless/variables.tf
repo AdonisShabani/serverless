@@ -38,6 +38,13 @@ variable "handler" {
   default     = "hello.handler"
 }
 
+variable "file_type" {
+  description = "The type of archive to generate. NOTE: zip is supported."
+  type        = string
+  default     = "zip"
+
+}
+
 variable "filename" {
   description = "Path to the function's deployment package within the local filesystem"
   type        = string
