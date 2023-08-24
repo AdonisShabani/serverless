@@ -52,15 +52,15 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 data "archive_file" "lambda" {
   type        = var.file_type
-  source_file = var.filename
-  output_path = var.output_path
+  source_file = "${path.module}/hello-world"
+  output_path = "${path.module}/hello-world.zip"
 }
 
 
 resource "aws_lambda_function" "lambda" {
   for_each = { for k, v in local.lambda_modules : k => v }
 
-  filename      = var.filename
+  filename      = "${path.module}/hello-world"
   function_name = each.value.function_name
   description   = each.value.description
   role          = aws_iam_role.iam_for_lambda.arn

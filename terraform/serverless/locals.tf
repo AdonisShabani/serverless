@@ -1,5 +1,5 @@
 locals {
-  project                    = "appstellar-academy"
+  project                    = "appstellar_academy"
   rest_api_name              = format("%s-api-%s", local.project, var.environment)
   rest_api_description       = "Appstellar Academy Rest API Gateway"
   lambda_iam_policy_name     = format("%s_lambda_policy_%s", local.project, var.environment)
