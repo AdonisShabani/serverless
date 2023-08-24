@@ -11,7 +11,8 @@ module "rest_api_resources" {
   api_gateway_root_resource_id = aws_api_gateway_rest_api.api_gtw.root_resource_id
   path                         = each.key
   http_method                  = "ANY"
-  uri                          = aws_lambda_function.lambda[each.value].invoke_arn
+  uri                          = aws_lambda_function.lambda[each.key].invoke_arn
+
 }
 
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
@@ -57,8 +58,8 @@ data "archive_file" "lambda" {
 
 
 resource "aws_lambda_function" "lambda" {
-  for_each      = { for k, v in local.lambda_modules : k => v }
-  
+  for_each = { for k, v in local.lambda_modules : k => v }
+
   filename      = var.filename
   function_name = each.key
   description   = each.value.description

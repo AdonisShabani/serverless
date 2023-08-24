@@ -7,20 +7,19 @@ locals {
   cloudwatch_logs_gorup_name = format("%s-lambda-logs-%s", local.project, var.environment)
 
 
+
   lambda_modules = {
-    lambda_user = {
+    "/users" = {
       function_name = "lambda_user"
       description   = "Lambda for users"
     },
-    lambda_enroled = {
-      function_name = "lambda_endrolled"
-      description    = "Lambda for enrolled accounts"
+    "/enrolled" = {
+      function_name = "lambda_enrolled"
+      description   = "Lambda for enrolled accounts"
     },
-    lambda_courses = {
+    "/courses" = {
       function_name = "lambda_courses"
-      description    = "Lambda for courses"
+      description   = "Lambda for courses"
     }
-
   }
-
 }
