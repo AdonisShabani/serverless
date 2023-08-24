@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "lambda_access_policy" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws:logs:eu-central-1:970967861509:log-group:/aws/lambda/dupont-dvms-api-dev*:*"
+      "*"
     ]
   }
   statement {
