@@ -40,15 +40,14 @@ data "aws_iam_policy_document" "lambda_access_policy" {
       "*"
     ]
   }
-  
-  #   statement {
-#     effect = "Allow"
-#     actions = [
-#       "secretsmanager:GetSecretValue"
-#     ]
-#     resources = [
-#       "*"
-#     ]
-#   }
+  Statement = {
+    effect = "Allow"
+    actions = [
+      "ec2:CreateNetworkInterface"
+    ]
+    resources = [
+      "*"
+    ]
+  }
 
 }
