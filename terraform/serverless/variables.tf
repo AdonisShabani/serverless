@@ -78,7 +78,7 @@ variable "memory_size" {
 variable "package_type" {
   description = "Lambda deployment package type. Valid values are Zip and Image. Defaults to Zip."
   type        = string
-  default     = "zip"
+  default     = "Zip"
 
 }
 variable "vpc_subnet_ids" {

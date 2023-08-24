@@ -60,7 +60,7 @@ resource "aws_lambda_function" "lambda" {
   for_each      = { for k, v in local.lambda_modules : k => v }
   filename      = var.filename
   function_name = each.key
-  description   = each.value.description
+  description   = each.key.description
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = var.handler
   runtime       = var.runtime
