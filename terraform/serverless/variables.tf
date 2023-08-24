@@ -38,24 +38,24 @@ variable "handler" {
   default     = "hello.handler"
 }
 
-variable "file_type" {
-  description = "The type of archive to generate. NOTE: zip is supported."
-  type        = string
-  default     = "zip"
+# variable "file_type" {
+#   description = "The type of archive to generate. NOTE: zip is supported."
+#   type        = string
+#   default     = "zip"
 
-}
+# }
 
-variable "filename" {
-  description = "Path to the function's deployment package within the local filesystem"
-  type        = string
-  default     = "hello.js"
-}
+# variable "filename" {
+#   description = "Path to the function's deployment package within the local filesystem"
+#   type        = string
+#   default     = "hello.js"
+# }
 
-variable "output_path" {
-  description = " The output of the archive file."
-  type        = string
-  default     = "hello.zip"
-}
+# variable "output_path" {
+#   description = " The output of the archive file."
+#   type        = string
+#   default     = "hello.zip"
+# }
 
 variable "runtime" {
   description = "AWS Lambda runtime"

@@ -50,17 +50,17 @@ resource "aws_iam_role" "iam_for_lambda" {
   })
 }
 
-data "archive_file" "lambda" {
-  type        = var.file_type
-  source_file = "${path.module}/hello-world/hello.js"
-  output_path = "${path.module}/hello-world.zip"
-}
+# data "archive_file" "lambda" {
+#   type        = var.file_type
+#   source_file = "${path.module}/${var.filename}"
+#   output_path = "${path.module}/hello-world.zip"
+# }
 
 
 resource "aws_lambda_function" "lambda" {
   for_each = { for k, v in local.lambda_modules : k => v }
 
-  filename      = "${path.module}/hello-world/hello.js"
+  filename      = "${path.module}/hello-world/hello-world.zip"
   function_name = each.value.function_name
   description   = each.value.description
   role          = aws_iam_role.iam_for_lambda.arn
