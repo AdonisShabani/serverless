@@ -15,11 +15,6 @@ module "rest_api_resources" {
 
 }
 
-resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
-  name = local.cloudwatch_logs_gorup_name
-
-  retention_in_days = 30
-}
 resource "aws_iam_policy" "policy" {
   name   = local.lambda_iam_policy_name
   policy = data.aws_iam_policy_document.lambda_access_policy.json
@@ -49,13 +44,6 @@ resource "aws_iam_role" "iam_for_lambda" {
     ]
   })
 }
-
-# data "archive_file" "lambda" {
-#   type        = var.file_type
-#   source_file = "${path.module}/${var.filename}"
-#   output_path = "${path.module}/hello-world.zip"
-# }
-
 
 resource "aws_lambda_function" "lambda" {
   for_each = { for k, v in local.lambda_modules : k => v }
