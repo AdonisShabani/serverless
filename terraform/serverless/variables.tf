@@ -69,6 +69,12 @@ variable "publish" {
   default     = true
 }
 
+variable "create_package" {
+  description = "Controls whether Lambda package should be created"
+  type        = bool
+  default     = false
+}
+
 variable "memory_size" {
   description = "Amount of memory in MB your Lambda Function can use at runtime. Valid value between 128 MB to 10,240 MB (10 GB), in 64 MB increments."
   type        = number
@@ -81,26 +87,27 @@ variable "package_type" {
   default     = "Zip"
 
 }
-variable "vpc_subnet_ids" {
-  description = "List of subnet ids when Lambda Function should run in the VPC. Usually private or intra subnets."
-  type        = list(string)
+
+variable "environment_variables" {
+  description = "A map that defines environment variables for the Lambda Function."
+  type        = map(string)
   default     = null
 }
-
-variable "vpc_security_group_ids" {
-  description = "List of security group ids when Lambda Function should run in the VPC."
-  type        = list(string)
-  default     = null
-}
-
-# variable "environment_variables" {
-#   description = "A map that defines environment variables for the Lambda Function."
-#   type        = map(string)
-#   default     = {}
-# }
 
 variable "timeout" {
   description = "The amount of time your Lambda Function has to run in seconds."
   type        = number
   default     = 30
+}
+
+variable "lambda_package" {
+  description = "The absolute path to an existing zip-file to use"
+  type        = string
+  default     = "./hello-world/hello-world.zip"
+}
+
+variable "attach_network_policy" {
+  description = "Controls whether VPC/network policy should be added to IAM role for Lambda Function"
+  type        = bool
+  default     = true
 }

@@ -15,58 +15,32 @@ module "rest_api_resources" {
 
 }
 
-resource "aws_iam_policy" "policy" {
-  name   = local.lambda_iam_policy_name
-  policy = data.aws_iam_policy_document.lambda_access_policy.json
-}
+module "lambda" {
+  source         = "terraform-aws-modules/lambda/aws"
+  version        = "~> 6.0.0"
 
-resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.policy.arn
-}
+  for_each = { for k, v in local.lambda_modules : k => v}
+  function_name  = each.value.function_name
+  description    = each.value.description
+  handler        = var.handler
+  runtime        = var.runtime
+  publish        = var.publish
+  create_package = var.create_package
+  memory_size    = var.memory_size
+  timeout        = var.timeout
+  create_role    = true
+  local_existing_package = var.lambda_package
+  # s3_existing_package = var.s3_existing_package
 
-resource "aws_iam_role" "iam_for_lambda" {
-  name = local.lambda_iam_role_name
+  vpc_subnet_ids         = [element(data.terraform_remote_state.networking.outputs.public_subnets, 1)]
+  vpc_security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
+  attach_network_policy  = var.attach_network_policy
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
+  environment_variables    = var.environment_variables
+  attach_policy_statements = var.attach_policy_statements
+  policy_statements        = var.policy_statements
 
-resource "aws_lambda_function" "lambda" {
-  for_each = { for k, v in local.lambda_modules : k => v }
-
-  filename      = "${path.module}/hello-world/hello-world.zip"
-  function_name = each.value.function_name
-  description   = each.value.description
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = var.handler
-  runtime       = var.runtime
-  publish       = var.publish
-  memory_size   = var.memory_size
-  package_type  = var.package_type
-  # variables          = var.environment_variables
-  timeout = var.timeout
-
-  vpc_config {
-    # Every subnet should be able to reach an EFS mount target in the same Availability Zone. Cross-AZ mounts are not permitted.
-    subnet_ids         = [element(data.terraform_remote_state.networking.outputs.public_subnets, 1)]
-    security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
-  }
-
-  source_code_hash = filebase64sha256("./hello-world/hello-world.zip")
+  tags = merge(module.labels.tags, var.tags)
 }
 
 resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
