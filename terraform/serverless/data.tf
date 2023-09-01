@@ -12,18 +12,6 @@ data "aws_iam_policy_document" "lambda_access_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "logs:CreateLogStream",
-      "logs:CreateLogGroup",
-      "logs:TagResource",
-      "logs:PutLogEvents"
-    ]
-    resources = [
-      "*"
-    ]
-  }
-  statement {
-    effect = "Allow"
-    actions = [
       "xray:PutTraceSegments",
       "xray:PutTelemetryRecords"
     ]
@@ -40,19 +28,4 @@ data "aws_iam_policy_document" "lambda_access_policy" {
       "*"
     ]
   }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "ec2:DescribeNetworkInterfaces",
-      "ec2:CreateNetworkInterface",
-      "ec2:DeleteNetworkInterface",
-      "ec2:DescribeInstances",
-      "ec2:AttachNetworkInterface"
-    ]
-    resources = [
-      "*"
-    ]
-  }
-
 }

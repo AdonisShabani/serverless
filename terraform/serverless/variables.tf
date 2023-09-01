@@ -112,6 +112,11 @@ variable "attach_network_policy" {
   default     = true
 }
 
+variable "attach_tracing_policy" {
+  description = " Controls whether X-Ray tracing policy should be added to IAM role for Lambda Function"
+  type        = bool
+  default     = true
+}
 variable "attach_policy_statements" {
   description = "Controls whether policy_statements should be added to IAM role for Lambda Function"
   type        = bool
@@ -120,6 +125,6 @@ variable "attach_policy_statements" {
 
 variable "policy_statements" {
   description = " Map of dynamic policy statements to attach to Lambda Function role"
-  type = any
-  default = {}
+  type        = any
+  default     = {}
 }

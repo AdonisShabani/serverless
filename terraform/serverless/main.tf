@@ -16,25 +16,26 @@ module "rest_api_resources" {
 }
 
 module "lambda" {
-  source         = "terraform-aws-modules/lambda/aws"
-  version        = "~> 6.0.0"
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 6.0.0"
 
-  for_each = { for k, v in local.lambda_modules : k => v}
-  function_name  = each.value.function_name
-  description    = each.value.description
-  handler        = var.handler
-  runtime        = var.runtime
-  publish        = var.publish
-  create_package = var.create_package
-  memory_size    = var.memory_size
-  timeout        = var.timeout
-  create_role    = true
+  for_each               = { for k, v in local.lambda_modules : k => v }
+  function_name          = each.value.function_name
+  description            = each.value.description
+  handler                = var.handler
+  runtime                = var.runtime
+  publish                = var.publish
+  create_package         = var.create_package
+  memory_size            = var.memory_size
+  timeout                = var.timeout
+  create_role            = true
   local_existing_package = var.lambda_package
   # s3_existing_package = var.s3_existing_package
 
   vpc_subnet_ids         = [element(data.terraform_remote_state.networking.outputs.private_subnets, 1)]
   vpc_security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
   attach_network_policy  = var.attach_network_policy
+  attach_tracing_policy  = var.attach_tracing_policy
 
   environment_variables    = var.environment_variables
   attach_policy_statements = var.attach_policy_statements
