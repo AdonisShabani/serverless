@@ -9,15 +9,6 @@ data "terraform_remote_state" "networking" {
 }
 
 data "aws_iam_policy_document" "lambda_access_policy" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "xray:PutTraceSegments",
-      "xray:PutTelemetryRecords"
-    ]
-    resources = [
-      "*"
-    ]
   }
   statement {
     effect = "Allow"
@@ -28,4 +19,3 @@ data "aws_iam_policy_document" "lambda_access_policy" {
       "*"
     ]
   }
-}
