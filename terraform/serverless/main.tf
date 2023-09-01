@@ -11,7 +11,7 @@ module "rest_api_resources" {
   api_gateway_root_resource_id = aws_api_gateway_rest_api.api_gtw.root_resource_id
   path                         = each.key
   http_method                  = "ANY"
-  uri                          = aws_lambda_function.lambda[each.key].invoke_arn
+  uri                          = module.lambda[each.key].lambda_function_invoke_arn
 
 }
 
@@ -40,7 +40,6 @@ module "lambda" {
   attach_policy_statements = var.attach_policy_statements
   policy_statements        = var.policy_statements
 
-  tags = merge(module.labels.tags, var.tags)
 }
 
 resource "aws_lambda_permission" "api_gtw_users_invoke_permission" {
