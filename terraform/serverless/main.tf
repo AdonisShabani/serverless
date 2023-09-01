@@ -32,7 +32,7 @@ module "lambda" {
   local_existing_package = var.lambda_package
   # s3_existing_package = var.s3_existing_package
 
-  vpc_subnet_ids         = [element(data.terraform_remote_state.networking.outputs.public_subnets, 1)]
+  vpc_subnet_ids         = [element(data.terraform_remote_state.networking.outputs.private_subnets, 1)]
   vpc_security_group_ids = [data.terraform_remote_state.networking.outputs.lambda_sg_id]
   attach_network_policy  = var.attach_network_policy
 
